@@ -10,6 +10,12 @@ int anode[8] = {8, 9, 10, 11, 12, 13, A0, A1};
 int current_pos_x = 0 ;
 int current_pos_y = 0 ;
 char CurrentState = 'r';
+unsigned long current_time = 0 ;
+unsigned long previous_time = 0 ;
+unsigned long time_interval = 0 ;
+
+int random_pos_x = 4 ;
+int random_pos_y = 4 ;
 
 void setup() {
   int i ;
@@ -35,6 +41,12 @@ void loop() {
 void go_right() {
 
   while (current_pos_x <= 7) {
+
+    if((current_pos_x == random_pos_x) && (current_pos_y ==  random_pos_y)){
+      GenerateRandom();
+    }
+    lit_random();
+    
     CheckState();
     if (CurrentState != 'r') {
       if (CurrentState == 'f') {
@@ -44,17 +56,29 @@ void go_right() {
         go_down();
       }
     }
-    lit(current_pos_x, current_pos_y);
+    lit(current_pos_x, current_pos_y); 
+    
+    current_time = millis() ;
+    time_interval = current_time - previous_time ;
+    if(time_interval>=300){
     current_pos_x++;
+    previous_time = current_time ;
+    }
+    
     if (current_pos_x == 8) {
       current_pos_x = 0;
     }
-    delay(300);
   }
 }
 void go_left() {
 
   while (current_pos_x >= 0) {
+
+    if((current_pos_x == random_pos_x) && (current_pos_y ==  random_pos_y)){
+      GenerateRandom();
+    }
+    lit_random();
+    
     CheckState();
     if (CurrentState != 'l') {
       if (CurrentState == 'f') {
@@ -65,16 +89,28 @@ void go_left() {
       }
     }
     lit(current_pos_x, current_pos_y);
+    
+    current_time = millis() ;
+    time_interval = current_time - previous_time ;
+    if(time_interval>=300){
     current_pos_x--;
+    previous_time = current_time ;
+    }
+    
     if (current_pos_x == -1) {
       current_pos_x = 7;
     }
-    delay(300);
   }
 }
 void go_down() {
 
   while (current_pos_y <= 7) {
+    
+    if((current_pos_x == random_pos_x) && (current_pos_y ==  random_pos_y)){
+      GenerateRandom();
+    }
+    lit_random();
+    
     CheckState();
     if (CurrentState != 'b') {
       if (CurrentState == 'r') {
@@ -85,16 +121,26 @@ void go_down() {
       }
     }
     lit(current_pos_x, current_pos_y);
+    current_time = millis() ;
+    time_interval = current_time - previous_time ;
+    if(time_interval>=300){
     current_pos_y++;
+    previous_time = current_time ;
+    }
     if (current_pos_y == 8) {
       current_pos_y = 0;
     }
-    delay(300);
+
   }
 }
 void go_up() {
 
   while (current_pos_y >= 0) {
+    if((current_pos_x == random_pos_x) && (current_pos_y ==  random_pos_y)){
+      GenerateRandom();
+    }
+    lit_random();
+
     CheckState();
     if (CurrentState != 'f') {
       if (CurrentState == 'r') {
@@ -105,11 +151,17 @@ void go_up() {
       }
     }
     lit(current_pos_x, current_pos_y);
+
+    current_time = millis() ;
+    time_interval = current_time - previous_time ;
+    if(time_interval>=300){
     current_pos_y--;
+    previous_time = current_time ;
+    }
+
     if (current_pos_y == -1) {
       current_pos_y = 7;
     }
-    delay(300);
   }
 }
 
@@ -148,3 +200,12 @@ void CheckState() {
     CurrentState = 'l';
   }
 }
+
+void GenerateRandom(){
+  random_pos_x = random(7);
+  random_pos_y = random(7);
+  }
+  
+void lit_random(){
+  lit(random_pos_x,random_pos_y); // x -> cathode :: y-> anode 
+  }
