@@ -4,6 +4,8 @@
 
 // cathode -> positive
 // anode -> negative
+const int pinX = A2; // Joystick X axis
+const int pinY = A3; // Joystick Y axis
 
 int cathode[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 int anode[8] = {8, 9, 10, 11, 12, 13, A0, A1};
@@ -19,10 +21,12 @@ int pos_y_array[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 int snake_length = 1 ;
 
-int random_pos_x = 0 ; // = 4 ;
-int random_pos_y = 0 ; // = 4 ;
+int random_pos_x = 4 ; 
+int random_pos_y = 4 ; 
 
 void setup() {
+  pinMode(pinX, INPUT);
+  pinMode(pinY, INPUT);
   int i ;
   for (i = 0; i <= 7; i++) {
     pinMode(cathode[i], OUTPUT);
@@ -239,16 +243,19 @@ void resetAnode() {
 }
 
 void CheckState() {
-  if (digitalRead(A2) == 0) {
-    CurrentState = 'f';
-  }
-  if (digitalRead(A3) == 0) {
-    CurrentState = 'r';
-  }
-  if (digitalRead(A4) == 0) {
+
+  int X = analogRead(pinX); // Read the X axis analog value
+  int Y = analogRead(pinY); // Read the Y axis analog value
+  if (Y > 900) {
     CurrentState = 'b';
   }
-  if (digitalRead(A5) == 0) {
+  if (X > 900) {
+    CurrentState = 'r';
+  }
+  if (Y < 150) {
+    CurrentState = 'f';
+  }
+  if (X < 150) {
     CurrentState = 'l';
   }
 }
