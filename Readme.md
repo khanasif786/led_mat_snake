@@ -1,4 +1,11 @@
 ## LED Matrix Snake Game
+This is a simple LED matrix snake game based on embedded C made without using any library.
+The components used are:
+Arduino
+LED matrix
+Joystick module
+Jumpers
+
 ### Video
 [![Youtube Video Link](https://img.youtube.com/vi/Z-m7jdfTLvc/0.jpg)](https://www.youtube.com/watch?v=Z-m7jdfTLvc)
 
